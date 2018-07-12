@@ -1,0 +1,14 @@
+{
+  "port": 8086,
+  "host": "0.0.0.0",
+  "mysql": {
+    "host": "localhost",
+    "database": "oauth2",
+    "user": "root",
+    "password": "root",
+    "port": 3306
+  },
+  "fe": {
+    "publicPath": "/dist/"
+  }
+}
