@@ -1,30 +1,25 @@
 import Vue from 'vue'
-// import config from 'config'
+import ElementUI from 'element-ui'
+import config from 'config'
+import VueLocalStorage from 'vue-ls'
 import { sync } from 'vuex-router-sync'
 
-// import '../styles/index.css'
-// import { initAPI } from '../api'
+import 'element-ui/lib/theme-chalk/index.css'
+import '../styles/index.css'
 import { createStore } from '../store'
 import { createRouter } from '../router'
+import { initHttp } from '../http'
 
 import App from '../App'
 
-Vue.mixin({
-  data () {
-    return {
-      pageAnimated: false
-    }
-  },
-  mounted () {
-    this.pageAnimated = true
-  }
-})
+Vue.use(ElementUI)
+Vue.use(VueLocalStorage, { namespace: config.storageNamespace })
 
 export function createApp () {
   const store = createStore()
   const router = createRouter()
   sync(store, router)
-  // initAPI(router)
+  initHttp(router)
   const app = new Vue({
     router,
     store,

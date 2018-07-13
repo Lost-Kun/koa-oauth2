@@ -30,6 +30,8 @@ app.use(async (ctx, next) => {
 
 app.use(serve('/dist', './dist'))
 
+app.use(serve('/public', './public'))
+
 app.use(bodyParser())
 
 app.use(router())

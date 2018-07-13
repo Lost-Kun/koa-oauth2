@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// import index from '../pages/index'
+import index from '../pages/index'
 import login from '../pages/login'
+import userInfo from '../pages/userInfo'
 
 Vue.use(Router)
 
@@ -11,12 +12,18 @@ export function createRouter () {
     mode: 'history',
     routes: [
       {
-        path: '/',
-        component: () => import('../pages/index')
-      },
-      {
         path: '/login',
         component: login
+      },
+      {
+        path: '/',
+        component: index,
+        children: [
+          {
+            path: '/',
+            component: userInfo
+          }
+        ]
       }
     ]
   })

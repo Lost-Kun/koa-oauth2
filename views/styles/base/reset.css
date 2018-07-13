@@ -1,0 +1,36 @@
+/* basic */
+@charset "UTF-8";
+
+html,body {
+	margin: 0;
+	padding: 0;
+  height:100%; 
+}
+
+/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+select::-ms-expand { display: none; }
+
+:focus {
+ 	outline: none;
+} /*for IE*/
+
+::-moz-focus-inner {
+ 	border-color: transparent;
+} /*for mozilla*/
+
+/* img */
+a img, :link img, :visited img, fieldset {
+  border: 0;
+}
+
+/* before after */
+blockquote:before, blockquote:after, q:before, q:after {
+  content: "";
+}
+blockquote, q {
+  quotes: "";
+}
+
+a {
+  text-decoration: none;
+}

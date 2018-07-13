@@ -10,10 +10,9 @@ export function createStore () {
     modules: {
       user: {
         state: {
-          id: '',
-          name: '',
-          nickName: '',
-          headImg: '',
+          user_id: '',
+          user_name: '',
+          login_name: '',
           token: ''
         },
         ...user
