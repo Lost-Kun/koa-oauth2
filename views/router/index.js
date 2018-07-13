@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+// import index from '../pages/index'
+import login from '../pages/login'
+
 Vue.use(Router)
 
 export function createRouter () {
@@ -9,11 +12,11 @@ export function createRouter () {
     routes: [
       {
         path: '/',
-        redirect: '/login'
+        component: () => import('../pages/index')
       },
       {
         path: '/login',
-        component: () => import('../pages/login')
+        component: login
       }
     ]
   })

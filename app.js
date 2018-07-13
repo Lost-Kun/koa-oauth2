@@ -1,8 +1,11 @@
 const Koa = require('koa')
-const app = new Koa()
+const path = require('path')
 const bodyParser = require('koa-bodyparser')
-const router = require('./utils/router')
+const staticCache = require('koa-static-cache')
 const config = require('config')
+const router = require('./utils/router')
+
+const app = new Koa()
 
 app.use(async (ctx, next) => {
   console.log(`Process ${ctx.request.method} ${ctx.request.url}...`)
@@ -25,6 +28,8 @@ app.use(async (ctx, next) => {
   ctx.response.set('X-Response-Time', `${execTime}ms`)
 })
 
+app.use(serve('/dist', './dist'))
+
 app.use(bodyParser())
 
 app.use(router())
@@ -36,4 +41,13 @@ if (!module.parent) {
   app.use(require('./middlewares/view').render(app))
   app.listen(port, host)
   console.log(`server started at http://${host}:${port}`)
+}
+
+function serve (prefix, filePath) {
+  return staticCache(path.resolve(__dirname, filePath), {
+    prefix: prefix,
+    gzip: true,
+    dynamic: true,
+    maxAge: 60 * 60 * 24 * 30
+  })
 }

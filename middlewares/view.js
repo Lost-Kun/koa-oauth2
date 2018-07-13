@@ -5,7 +5,7 @@ const Cookies = require('universal-cookie')
 const { createBundleRenderer } = require('vue-server-renderer')
 
 const resolve = file => path.resolve(__dirname, file)
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined
 const templatePath = resolve('../views/index.html')
 
 function createRenderer (bundle, options) {

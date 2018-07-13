@@ -4,13 +4,14 @@ const fs = require('fs')
 const path = require('path')
 const config = require('config')
 const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
-const vueConfig = require('./vue-loader.config')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const utils = require('./utils')
+const vueLoaderConfig = require('./vue-loader.conf')
 
-const isProd = process.env.NODE_ENV === 'production'
+const isProd = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === undefined
 const resolve = dir => path.resolve(__dirname, dir)
 
 config.fe.host = config.host
@@ -18,7 +19,7 @@ config.fe.port = config.port
 fs.writeFileSync(resolve('../views/config.json'), JSON.stringify(config.fe))
 
 module.exports = {
-  mode: process.env.NODE_ENV || 'development',
+  mode: process.env.NODE_ENV || 'production',
   devtool: isProd ? false : '#cheap-module-source-map',
   output: {
     path: resolve('../dist'),
@@ -44,7 +45,7 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueConfig
+        options: vueLoaderConfig
       },
       {
         test: /\.js$/,
@@ -63,19 +64,7 @@ module.exports = {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader'
       },
-      {
-        test: /\.css$/,
-        use: isProd
-          ? ExtractTextPlugin.extract({
-            use: 'css-loader?minimize&importLoaders=1!postcss-loader',
-            fallback: 'vue-style-loader'
-          })
-          : [
-            'vue-style-loader',
-            { loader: 'css-loader', options: { importLoaders: 1 } },
-            'postcss-loader'
-          ]
-      },
+      ...utils.styleLoaders(isProd),
       {
         test: /\.snippets/,
         loader: 'raw-loader'
@@ -89,8 +78,9 @@ module.exports = {
   plugins: isProd
     ? [
       new webpack.optimize.ModuleConcatenationPlugin(),
-      new ExtractTextPlugin({
-        filename: 'common.[chunkhash].css'
+      new MiniCssExtractPlugin({
+        filename: '[name].[hash].css',
+        chunkFilename: '[id].[hash].css'
       }),
       new VueLoaderPlugin()
     ]

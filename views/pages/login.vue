@@ -1,8 +1,8 @@
 <template>
-  <div class="test">log12w</div>
+  <div class="test">log</div>
 </template>
 
-<style scoped>
+<style lang="less" scoped>
 .test {
   margin-top: 100px;
 }
