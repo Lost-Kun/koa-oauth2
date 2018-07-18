@@ -1,11 +1,15 @@
 const Koa = require('koa')
 const path = require('path')
 const bodyParser = require('koa-bodyparser')
+const pathToRegexp = require('path-to-regexp')
 const staticCache = require('koa-static-cache')
+const koaJwt = require('koa-jwt')
 const config = require('config')
+const cors = require('koa2-cors')
 const router = require('./utils/router')
 
 const app = new Koa()
+const jwtSecret = config.get('jwt.secret')
 
 app.use(async (ctx, next) => {
   console.log(`Process ${ctx.request.method} ${ctx.request.url}...`)
@@ -21,7 +25,11 @@ app.use(async (ctx, next) => {
   try {
     await next()
   } catch (e) {
-    ctx.response.status = 417
+    if (e.message === 'Authentication Error') {
+      ctx.response.status = 401
+    } else {
+      ctx.response.status = 417
+    }
     ctx.response.body = { message: e.message }
   }
   execTime = new Date().getTime() - start
@@ -31,6 +39,17 @@ app.use(async (ctx, next) => {
 app.use(serve('/dist', './dist'))
 
 app.use(serve('/public', './public'))
+
+app.use(cors())
+
+app.use(koaJwt({ secret: jwtSecret }).unless((ctx) => {
+  if (/^\/oauth/.test(ctx.path)) {
+    return pathToRegexp([
+      '/oauth/user/login'
+    ]).test(ctx.path)
+  }
+  return true
+}))
 
 app.use(bodyParser())
 

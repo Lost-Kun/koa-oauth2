@@ -2,14 +2,18 @@
   "port": 8086,
   "host": "0.0.0.0",
   "mysql": {
-    "host": "localhost",
-    "database": "oauth",
+    "host": "rm-2ze1m8ynp7b7q8986qo.mysql.rds.aliyuncs.com",
+    "database": "pm",
     "user": "root",
-    "password": "root",
+    "password": "shangjian123CCC",
     "port": 3306
   },
   "fe": {
     "publicPath": "/dist/",
     "storageNamespace": "sj_oauth_"
+  },
+  "jwt": {
+    "expire": "14 days",
+    "secret": "shared-secret"
   }
 }

@@ -11,6 +11,9 @@ const config = merge(base, {
     app: './views/entry/client.js'
   },
   optimization: {
+    // runtimeChunk: {
+    //   name: 'manifest'
+    // },
     splitChunks: {
       chunks: 'async',
       name: true,

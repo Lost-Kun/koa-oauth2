@@ -18,6 +18,16 @@ const checkLogin = async (name, password) => {
   }
 }
 
+/**
+ * 获取用户信息
+ * @param {Number} userId 用户id
+ */
+const getUserInfo = async (userId) => {
+  const res = await query(`select user_id,user_name,login_name from user where user_id = ${userId}`)
+  return res[0]
+}
+
 module.exports = {
-  checkLogin
+  checkLogin,
+  getUserInfo
 }

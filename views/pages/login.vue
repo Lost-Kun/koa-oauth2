@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import config from 'config'
+import Cookies from 'universal-cookie'
 import myheader from '../components/header'
 
 export default {
@@ -71,9 +73,22 @@ export default {
             name: this.userInfo.username.replace(/(^\s*)|(\s*$)/g, ''),
             password: this.userInfo.password
           }).then((data) => {
-            this.$store.commit('user/SET_VALUE', data)
-            this.$ls.set('user', data)
-            this.$router.push('/')
+            if (this.$route.query.redirect_uri) {
+              window.location = `${this.$route.query.redirect_uri}?token=${data.token}`
+            } else {
+              const cookies = new Cookies()
+              this.$store.commit('user/SET_VALUE', data)
+              this.$ls.set('user', data)
+              cookies.set(
+                config.storageNamespace + 'token',
+                data.token,
+                {
+                  path: '/',
+                  maxAge: 60 * 60 * 24 * 31
+                }
+              )
+              this.$router.push('/')
+            }
           })
         }
       })

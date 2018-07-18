@@ -9,7 +9,7 @@
               {{user_name}}<i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="changePassword">修改密码</el-dropdown-item>
+            <!-- <el-dropdown-item command="changePassword">修改密码</el-dropdown-item> -->
             <el-dropdown-item command="logout">注销</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import Cookies from 'universal-cookie'
+import config from 'config'
 import popup from './popup'
 
 export default {
@@ -141,11 +143,11 @@ export default {
       this.$refs.ruleForm.clearValidate()
     },
     logout () {
-      this.$confirm('是否确认注销').then(() => {
-        this.$http.post('/oauth/user/logout').then(() => {
-          this.$router.push('/login')
-        })
-      }).catch(() => {})
+      const cookies = new Cookies()
+      this.$ls.remove('user')
+      cookies.remove(config.storageNamespace + 'token')
+      this.$store.commit('user/SET_VALUE', {})
+      this.$router.push('/login')
     }
   }
 }
