@@ -2,10 +2,10 @@
   "port": 8086,
   "host": "0.0.0.0",
   "mysql": {
-    "host": "rm-2ze1m8ynp7b7q8986qo.mysql.rds.aliyuncs.com",
-    "database": "pm",
+    "host": "localhost",
+    "database": "oauth",
     "user": "root",
-    "password": "shangjian123CCC",
+    "password": "root",
     "port": 3306
   },
   "fe": {
